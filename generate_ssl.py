@@ -8,10 +8,16 @@ from cryptography.x509.oid import NameOID  #object identifiers, Imports predefin
 # Generate private key
 key = rsa.generate_private_key(
     public_exponent=65537, # this is a param
-    key_size=2048
+    key_size=2048  #2048-bit RSA key
 )
 
-# Create self-signed certificate
+"""
+public key ecnodes
+private key decodes
+"""
+
+
+# Create certificate identity fields
 subject = issuer = x509.Name([
     x509.NameAttribute(NameOID.COUNTRY_NAME, "IN"),
     x509.NameAttribute(NameOID.STATE_OR_PROVINCE_NAME, "Karnataka"),
@@ -35,7 +41,7 @@ cert = x509.CertificateBuilder().subject_name(
 ).sign(key, hashes.SHA256())
 
 # Save key
-with open("key.pem", "wb") as f:
+with open("key.pem", "wb") as f: #creates a file named key.pem in write-binary mode, and writes the private key to it in PEM format without encryption.
     f.write(key.private_bytes(
         serialization.Encoding.PEM,
         serialization.PrivateFormat.TraditionalOpenSSL,
@@ -43,7 +49,7 @@ with open("key.pem", "wb") as f:
     ))
 
 # Save certificate
-with open("cert.pem", "wb") as f:
+with open("cert.pem", "wb") as f: #creates a file named cert.pem in write-binary mode, and writes the certificate to it in PEM format.
     f.write(cert.public_bytes(serialization.Encoding.PEM))
 
-print("SSL certificate generated: cert.pem and key.pem")
+print("SSL certificate generated for: cert.pem and key.pem")

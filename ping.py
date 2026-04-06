@@ -4,12 +4,12 @@ import time
 import os
 from utils import resolve_host
 
-ICMP_ECHO_REQUEST = 8
+ICMP_ECHO_REQUEST = 8 #ICMP type for echo request (ping) messages
 
 
 def checksum(source):
     sum = 0
-    count_to = (len(source) // 2) * 2
+    count_to = (len(source) // 2) * 2 #floors to closest even number
     count = 0
     #masking the checksum to 32 bits to prevent overflow, and then adding each 16-bit chunk of the source data to the sum.
     while count < count_to:
@@ -42,9 +42,7 @@ def create_packet(id):
 
     chksum = checksum(header + data)
 
-    header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0,
-                         socket.htons(chksum), id, 1)
-
+    header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, socket.htons(chksum), id, 1) 
     return header + data
 
 
