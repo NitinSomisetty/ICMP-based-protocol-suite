@@ -4,6 +4,8 @@ from traceroute import traceroute
 from utils import resolve_host
 from ssl_utils import create_server_ssl_context
 
+TRACEROUTE_MAX_HOPS = 8
+
 
 async def handle_client(reader, writer):  # reader and writer wrap tcp sockets
 
@@ -42,7 +44,7 @@ async def handle_client(reader, writer):  # reader and writer wrap tcp sockets
         return
 
     ping_result = ping(host)  # await call
-    trace = traceroute(host)
+    trace = traceroute(host, max_hops=TRACEROUTE_MAX_HOPS)
 
     response = " -- PING RESULTS -- \n"
     response += ping_result + "\n"
@@ -70,7 +72,7 @@ async def main():  #main function to set up the server and listen for incoming c
         ssl=ssl_context
     )
 
-    print("Diagnostic Server Running on port 8888\n")
+    print("Server Running on port 8888  \n")
 
     async with server:
         await server.serve_forever() #runs the server indefinitely, handling incoming connections
